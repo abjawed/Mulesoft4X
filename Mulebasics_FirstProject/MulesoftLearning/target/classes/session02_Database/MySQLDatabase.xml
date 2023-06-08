@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="9876ea1e-1a32-46c5-8c0c-6a85716184d1" >
+		<db:oracle-connection host="localhost" user="muledb" password="welcome1" serviceName="XE" />
+	</db:config>
+	<db:config name="MYSQLConnection" doc:name="Database Config" doc:id="baadf7cb-cc74-4c63-9144-064e4b15365c" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root123" database="muledb" />
+	</db:config>
+	<flow name="MySQLFlow" doc:id="1e310fb2-2a9e-4667-8390-e476280c5c5f" >
+		<db:select doc:name="Select" doc:id="ae07651a-da02-4888-add1-815344660be3" config-ref="MYSQLConnection">
+			<db:sql ><![CDATA[SELECT * FROM muledb.studentinformation;]]></db:sql>
+		</db:select>
+	</flow>
+</mule>

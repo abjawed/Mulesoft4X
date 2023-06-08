@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="MYSQL_Connection" doc:name="Database Config" doc:id="2500e103-c9ce-45da-bcc3-4ccce440ea6d" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root123" database="muledb" />
+	</db:config>
+	<flow name="pocMYSQLDatabaseFlow" doc:id="b69db61b-cbb0-4992-bf63-e12936d4e2aa" >
+		<http:listener doc:name="Listener_OracleXE" doc:id="60d5e457-2e5f-4bb2-9ba6-35389f9d2824" config-ref="HTTP_Listener_learnmulesoft" path="/invokemysqlstudentinfo"/>
+		<db:select doc:name="MYSQL_SelectOperation" doc:id="6753097c-3a0d-4700-a9ed-9fc34e6aeb08" config-ref="MYSQL_Connection">
+			<db:sql ><![CDATA[SELECT * FROM muledb.studentinformation]]></db:sql>
+		</db:select>
+		<logger level="INFO" doc:name="Log Database Result from MYSQL - Convert the output to payload" doc:id="41945b9b-0538-4bf2-8e88-52ba65e34a72" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
+	</flow>
+</mule>

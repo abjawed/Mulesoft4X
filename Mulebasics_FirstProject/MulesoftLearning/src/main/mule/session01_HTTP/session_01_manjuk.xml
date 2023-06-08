@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_8082_BasePath_Session01" doc:name="HTTP Listener config" doc:id="b3cd6577-4205-4b71-928b-c4709b021775" basePath="Session01" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_learnmulesoft" doc:name="HTTP Listener config" doc:id="cf41a014-f43b-4e33-97b2-bc46b2c55468" basePath="learnmulesoft" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<flow name="FirstFlow" doc:id="49a02994-9c28-4168-ac47-47e450338c61" >
+		<http:listener doc:name="MyFirstListener" doc:id="d0118943-575e-4305-b9a8-d4f69dbe59da" config-ref="HTTP_Listener_learnmulesoft" path="/myfirstapicall"/>
+		<logger level="INFO" doc:name="LoggerForFlowOne" doc:id="13da617d-0846-48ea-b6b0-beeaab59c631" message="First Flow Logger was Invoked"/>
+	</flow>
+	<flow name="SecondFlow" doc:id="35c4affc-cff7-4109-b01b-3f3247d375a2" >
+		<http:listener doc:name="MySecondListener" doc:id="763384ad-dc57-4c33-aabb-2b0595f5ec54" config-ref="HTTP_8082_BasePath_Session01" path="/mysecondtapicall"/>
+		<logger level="INFO" doc:name="LoggerForFlow02" doc:id="f2188895-02f6-4521-a6f3-43510a591bd0" message="Second Flow Logger was Invoked"/>
+	</flow>
+</mule>

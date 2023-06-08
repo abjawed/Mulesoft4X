@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="publicapis" doc:name="HTTP Request configuration" doc:id="f998bca1-e769-400d-80e9-ad1783401d1f" >
+		<http:request-connection protocol="HTTPS" host="api.publicapis.org" />
+	</http:request-config>
+	<http:request-config name="boredapi" doc:name="HTTP Request configuration" doc:id="b5de9ed3-381b-4289-ae63-46655b6d43cb" >
+		<http:request-connection protocol="HTTPS" host="www.boredapi.com" />
+	</http:request-config>
+	<http:request-config name="datausa_io" doc:name="HTTP Request configuration" doc:id="79236a1a-ae31-47b7-9b1c-8c49d07e8efb" basePath="/api" >
+		<http:request-connection protocol="HTTPS" host="datausa.io" />
+	</http:request-config>
+	<flow name="InvokePublicAPIsFlow" doc:id="2f673714-ea67-4f2b-9ce0-efbe8dbc4d1a" >
+		<http:listener doc:name="Listener" doc:id="8f49fabb-aa04-4112-98b6-9748002d5153" config-ref="HTTP_8082_BasePath_Session01" path="/invokepublicapi"/>
+		<http:request method="GET" doc:name="Request-publicapis" doc:id="81d1fc33-ebc9-45fc-9d7e-98399a549991" config-ref="publicapis" path="/entries"/>
+		<logger level="INFO" doc:name="LoggerPayload" doc:id="84156806-a676-4342-aa88-8141bcd1999a" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]"/>
+	</flow>
+	<flow name="InvokeBoredapiFlow" doc:id="0bcccce2-dd10-4312-9437-40bd143e5c12" >
+		<http:listener doc:name="Invokeboredapi" doc:id="973b3b54-fe06-49df-8809-f51fe7b2a308" config-ref="HTTP_8082_BasePath_Session01" path="/invokeboredapi" allowedMethods="GET"/>
+		<http:request method="GET" doc:name="Request-Boredapi" doc:id="c0521ef2-9314-4ff5-a46d-c97f56fc5c52" config-ref="boredapi" path="/api/activity"/>
+		<logger level="INFO" doc:name="LoggerPayload" doc:id="a03eb326-d0a3-4f63-8dcf-de834cb0f465" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
+	</flow>
+	<flow name="InvokedatausaAPIsFlow_for_query_param" doc:id="d954806a-61ab-42c1-bd13-ef1c80d52e7f" >
+		<http:listener doc:name="Listener" doc:id="cdc10df6-2de0-442c-931c-4c09ebb434e5" config-ref="HTTP_8082_BasePath_Session01" path="/invokequeryparam1"/>
+		<http:request method="GET" doc:name="Request - datausa.io" doc:id="66a236c5-5b27-4cb5-bc2d-c346c0426de9" config-ref="datausa_io" path="/data">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	drilldowns : "Nation",
+	measures : "Population"
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="LoggerPayloadInJosnFormat" doc:id="4f27f0e7-afd8-4f0e-831c-3498b613ac2e" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload]" />
+	</flow>
+</mule>

@@ -1,1 +1,225 @@
-
+#%RAML 1.0
+title: emp-xxxx
+baseUri: http://localhost:8001/emp-sapi
+# Create-employee - Json based design
+/create-employee:
+  post:
+    body:
+      application/json:
+        type: object
+        properties:
+          employeeID:
+            required: true
+            type: integer
+            example: 239271
+          employeeName:
+            required: true
+            type: string
+            example: "Jawed"
+          employeeStatus:
+            required: true
+            type: string
+            example: "A"
+        example:
+          {
+            "employeeID": 100,
+            "employeeName": "Jawed",
+            "employeeStatus": "A"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 200
+              message:
+                type: string
+                required: true
+                example: "Success"
+            example:
+              {
+                "status": 200,
+                "message": "Success"
+              }
+      500:
+       body:
+          application/json:
+            type: object
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 500
+              message:
+                type: string
+                required: true
+                example: "Internal Server Error"
+            example:
+              {
+                "status": 500,
+                "message": "Internal Server Error"
+              }
+# /update-emploee XML based design
+/update-emploee:
+  put:
+    body:
+      application/xml:
+        type: object
+        xml:
+          name: employee
+        properties:
+          employeeID:
+            required: true
+            type: integer
+            example: 239271
+          employeeStatus:
+            required: true
+            type: string
+            example: "A"
+        example:
+          <?xml version ="1.0" encoding="UTF-8"?>
+          <employee>
+            <employeeID>333</employeeID>
+            <employeeStatus>A</employeeStatus>
+          </employee>
+    responses:
+      200:
+        body:
+          application/xml:
+            type: object
+            xml:
+              name: response
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 200
+              message:
+                type: string
+                required: true
+                example: "Success"
+            example:
+              <?xml version="1.0" encoding="UTF-8"?>
+              <response>
+                <status>200</status>
+                <message>success</message>
+              </response>
+      500:
+        body:
+          application/xml:
+            type: object
+            xml:
+              name: response
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 500
+              message:
+                type: string
+                required: true
+                example: "Internal Server Error"
+            example:
+              <?xml version="1.0" encoding="UTF-8"?>
+              <response>
+                <status>500</status>
+                <message>Internal Server Error</message>
+              </response>
+# Query-Parmas resource
+/get-employee:
+  get:
+    queryParameters:
+      employeeID:
+        required: false
+        example: 625522
+        type: integer
+      employeeStatus:
+        required: false
+        example: "A"
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              employeeID:
+                required: true
+                type: integer
+                example: 239271
+              employeeName:
+                required: true
+                type: string
+                example: "Jawed"
+              employeeStatus:
+                required: true
+                type: string
+                example: "A"
+            example:
+              {
+                "employeeID": 100,
+                "employeeName": "Jawed",
+                "employeeStatus": "A"
+              }
+      500:
+        body:
+          application/json:
+            type: object
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 500
+              message:
+                type: string
+                required: true
+                example: "Internal Server Error"
+            example:
+              {
+                "status": 500,
+                "message": "Internal Server Error"
+              }        
+# URI-Params resouces
+/delete-employee/{employeeID}/{employeeName}:
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 200
+              message:
+                type: string
+                required: true
+                example: "Success"
+            example:
+              {
+                "status": 200,
+                "message": "Success"
+              }
+      500:
+       body:
+          application/json:
+            type: object
+            properties:
+              status:
+                type: integer
+                required: true
+                example: 500
+              message:
+                type: string
+                required: true
+                example: "Internal Server Error"
+            example:
+              {
+                "status": 500,
+                "message": "Internal Server Error"
+              }
